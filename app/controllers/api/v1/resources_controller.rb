@@ -1,4 +1,5 @@
 class Api::V1::ResourcesController < ApplicationController
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :define_location, only: [:index]
   before_action :define_resource, only: [:show, :update, :destroy]
 

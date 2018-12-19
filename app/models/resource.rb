@@ -1,9 +1,9 @@
 class Resource < ApplicationRecord
   enum status: [:unverified, :verified]
 
-  geocoded_by :address
-
   after_validation :geocode
+
+  geocoded_by :address
 
   def address
     [street, city, state, zipcode].join(', ')

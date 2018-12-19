@@ -1,6 +1,4 @@
 class Resource < ApplicationRecord
-  RADIUS = 10 # miles
-
   enum status: [:unverified, :verified]
 
   after_validation :geocode
@@ -11,9 +9,12 @@ class Resource < ApplicationRecord
   scope :health, -> () { where(health: true) }
   scope :shelter, -> () { where(shelter: true) }
 
-  scope :close, -> (lat, long) { near([lat, long], RADIUS) }
-  scope :closest, -> (lat, long) do
-    min_by { |resource| resource.distance_from([lat, long]) }
+  scope :close, -> (latitude, longitude, mi_radius) do
+    near([latitude, longitude], mi_radius)
+  end
+
+  scope :closest, -> (latitude, longitude) do
+    min_by { |resource| resource.distance_from([latitude, longitude]) }
   end
 
   private

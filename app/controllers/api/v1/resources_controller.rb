@@ -2,40 +2,46 @@ class Api::V1::ResourcesController < ApplicationController
   before_action :define_location, only: [:index]
   before_action :define_resource, only: [:show, :update, :destroy]
 
-  attr_reader :latitude, :longitude, :radius
+  attr_reader :resource, :latitude, :longitude, :radius
 
   def index
     resources = Resource.close(latitude, longitude, radius)
 
     if params[:closest]
-      resources = resources.closest(latitude, longitude)
+      resources = [
+        resources.food.closest(latitude, longitude),
+        resources.health.closest(latitude, longitude),
+        resources.shelter.closest(latitude, longitude)
+      ]
     end
 
     render json: resources
   end
 
   def show
-    render json: @resource
+    render json: resource
   end
 
   def create
-    if @resource.save
-      render status: :success, json: @resource
+    resource = Resource.new(resource_params)
+
+    if resource.save
+      render status: :success, json: resource
     else
       render status: :error, json: { message: 'resource failed to save.' }
     end
   end
 
   def update
-    if @resource.update(resource_params)
-      render status: :success, json: @resource
+    if resource.update(resource_params)
+      render status: :success, json: resource
     else
       render status: :error, json: { message: 'resource failed to update.' }
     end
   end
 
   def destroy
-
+    resource.delete
   end
 
   private

@@ -1,11 +1,5 @@
 require 'rails_helper'
 
-Geocoder::Lookup::Test.add_stub(
-  '2400 N Western Ave, Chicago, IL, 60625', [
-    { 'coordinates' => [41.90154, -87.694389] }
-  ]
-)
-
 RSpec.describe Resource, type: :model do
   describe '.food' do
     let(:food_resource) { create(:resource, :food) }

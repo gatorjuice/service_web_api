@@ -6,6 +6,8 @@ FactoryBot.define do
     city { 'Chicago' }
     state { 'IL' }
     zipcode { '60625' }
+    latitude { 41.90154 }
+    longitude { -87.694389 }
 
     trait :food do
       food true
@@ -17,6 +19,14 @@ FactoryBot.define do
 
     trait :shelter do
       shelter true
+    end
+
+    trait :far_away do
+      food true
+      health true
+      shelter true
+      latitude 90.90154
+      longitude -1.694389
     end
   end
 end

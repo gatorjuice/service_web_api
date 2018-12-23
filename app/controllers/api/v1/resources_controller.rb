@@ -5,7 +5,6 @@ class Api::V1::ResourcesController < ApplicationController
   attr_reader :resource, :latitude, :longitude, :radius
 
   def index
-    binding.pry
     resources = Resource.close(latitude, longitude, radius)
 
     if params[:closest]

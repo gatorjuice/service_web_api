@@ -2,41 +2,46 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::ResourcesController, type: :controller do
   describe 'GET#index' do
-    context 'closest param is true' do
-      let!(:food_resource) { create :resource, :food }
-      let!(:health_resource) { create :resource, :health }
-      let!(:shelter_resource) { create :resource, :shelter }
+    let!(:food_resource) { create :resource, :food }
+    let!(:health_resource) { create :resource, :health }
+    let!(:shelter_resource) { create :resource, :shelter }
+    let!(:distant_resource) { create :resource, :far_away }
 
+    context 'closest param is true' do
       it 'returns the closest of each resource' do
-        get :index, params: {
+        get :index, format: :json, params: {
           latitude: 41.878113,
           longitude: -87.629799,
-          radius: 10000000,
+          radius: 100,
           closest: true
-         }
+        }
 
-        expect(response.body).to eq []
+        parsed_response = JSON.parse response.body
+
+        expect(parsed_response.map { |resource| resource['id'] }).to match_array(
+          [food_resource.id, health_resource.id, shelter_resource.id]
+        )
       end
     end
 
     context 'closest param is nil or false' do
       it 'returns all resources within the radius' do
+        get :index, format: :json, params: {
+          latitude: 41.878113,
+          longitude: -87.629799,
+          radius: 100
+        }
+
+        parsed_response = JSON.parse response.body
+
+        resource_ids = parsed_response.map { |resource| resource['id'] }
+
+        expect(resource_ids).to match_array(
+          [food_resource.id, health_resource.id, shelter_resource.id]
+        )
+
+        expect(resource_ids).to_not include distant_resource.id
       end
     end
   end
 end
-
-
-  # def index
-  #   resources = Resource.close(latitude, longitude, radius)
-
-  #   if params[:closest]
-  #     resources = [
-  #       resources.food.closest(latitude, longitude),
-  #       resources.health.closest(latitude, longitude),
-  #       resources.shelter.closest(latitude, longitude)
-  #     ]
-  #   end
-
-  #   render json: resources
-  # end

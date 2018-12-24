@@ -4,6 +4,11 @@ class Api::V1::ResourcesController < ApplicationController
 
   attr_reader :resource, :latitude, :longitude, :radius
 
+  api :GET, '/api/v1/resources'
+  param :latitude, Float, desc: 'latitude of your location', required: true
+  param :longitude, Float, desc: 'longitude of your location', required: true
+  param :radius, Integer, desc: 'radius, in miles, whithin to show results', required: true
+  param :closest, [true, false], desc: 'return only the closest of each resource type'
   def index
     resources = Resource.close(latitude, longitude, radius)
 

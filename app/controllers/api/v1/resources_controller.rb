@@ -30,7 +30,7 @@ class Api::V1::ResourcesController < ApplicationController
   def show
     render_success(resource)
   rescue => error
-    render_error(error)
+    render_error(error.inspect)
   end
 
   api :POST, '/v1/resources'
@@ -42,14 +42,17 @@ class Api::V1::ResourcesController < ApplicationController
   end
 
   def update
-    resource.update(resource_params)
+    resource.update!(resource_params)
     render_success(resource)
   rescue => error
     render_error(error.inspect)
   end
 
   def destroy
-    resource.delete
+    resource.destroy!
+    render_success(resource)
+  rescue => error
+    render_error(error.inspect)
   end
 
   private

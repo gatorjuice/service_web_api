@@ -35,7 +35,7 @@ class Api::V1::ResourcesController < ApplicationController
 
   api :POST, '/v1/resources'
   def create
-    resource = Resource.create(resource_params)
+    resource = Resource.create!(resource_params)
     render_success(resource)
   rescue => error
     render_error(error.inspect)

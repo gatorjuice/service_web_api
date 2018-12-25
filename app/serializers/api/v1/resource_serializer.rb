@@ -11,8 +11,8 @@ class Api::V1::ResourceSerializer < ActiveModel::Serializer
     :health,
     :shelter,
     :latitude,
-    :longitude,
-    :bearing,
-    :distance
+    :longitude
   )
+  attribute :bearing, if: -> { object.respond_to?(:bearing) }
+  attribute :distance, if: -> { object.respond_to?(:distance) }
 end

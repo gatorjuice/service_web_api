@@ -4,11 +4,11 @@ class Api::V1::ResourcesController < ApplicationController
 
   attr_reader :resource, :latitude, :longitude, :radius
 
-  api :GET, '/api/v1/resources'
-  param :latitude, Float, desc: 'latitude of your location', required: true
-  param :longitude, Float, desc: 'longitude of your location', required: true
-  param :radius, Integer, desc: 'radius, in miles, whithin to show results', required: true
-  param :closest, [true, false], desc: 'return only the closest of each resource type'
+  api :GET, '/v1/resources'
+  param :latitude, String, desc: 'latitude of your location', required: true
+  param :longitude, String, desc: 'longitude of your location', required: true
+  param :radius, String, desc: 'radius, in miles, whithin to show results', required: true
+  param :closest, String, desc: 'return only the closest of each resource type'
   def index
     resources = Resource.close(latitude, longitude, radius)
 
@@ -20,29 +20,32 @@ class Api::V1::ResourcesController < ApplicationController
       ]
     end
 
-    render json: resources
+    render_success(resources.select(&:present?))
+  rescue => error
+    render_error(error.inspect)
   end
 
+  api :GET, '/v1/resources/:id'
+  param :id, String, desc: 'id of the requested resource', required: true
   def show
-    render json: resource
+    render_success(resource)
+  rescue => error
+    render_error(error)
   end
 
+  api :POST, '/v1/resources'
   def create
-    resource = Resource.new(resource_params)
-
-    if resource.save
-      render status: :success, json: resource
-    else
-      render status: :error, json: { message: 'resource failed to save.' }
-    end
+    resource = Resource.create(resource_params)
+    render_success(resource)
+  rescue => error
+    render_error(error.inspect)
   end
 
   def update
-    if resource.update(resource_params)
-      render status: :success, json: resource
-    else
-      render status: :error, json: { message: 'resource failed to update.' }
-    end
+    resource.update(resource_params)
+    render_success(resource)
+  rescue => error
+    render_error(error.inspect)
   end
 
   def destroy

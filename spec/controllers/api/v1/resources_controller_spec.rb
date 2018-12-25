@@ -9,7 +9,7 @@ RSpec.describe Api::V1::ResourcesController, type: :controller do
 
     context 'closest param is true' do
       it 'returns the closest of each resource' do
-        get :index, format: :json, params: {
+        get :index, params: {
           latitude: 41.878113,
           longitude: -87.629799,
           radius: 100,

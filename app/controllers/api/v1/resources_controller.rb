@@ -9,18 +9,12 @@ class Api::V1::ResourcesController < ApplicationController
   api :GET, '/v1/resources'
   param :latitude, String, desc: 'latitude of your location', required: true
   param :longitude, String, desc: 'longitude of your location', required: true
-  param :radius, String, desc: 'radius, in miles, whithin to show results', required: true
+  param :radius, String, desc: 'radius whithin to show results', required: true
   param :closest, String, desc: 'return only the closest of each resource type'
   def index
     resources = Resource.close(latitude, longitude, radius)
 
-    if params[:closest]
-      resources = [
-        resources.food.closest(latitude, longitude),
-        resources.health.closest(latitude, longitude),
-        resources.shelter.closest(latitude, longitude)
-      ]
-    end
+    resources = closest_resources(resources) if params[:closest]
 
     render_success(resources.select(&:present?))
   rescue StandardError => error
@@ -69,20 +63,18 @@ class Api::V1::ResourcesController < ApplicationController
     @resource ||= Resource.find(params[:id])
   end
 
+  def closest_resources(resources)
+    [
+      resources.food.closest(latitude, longitude),
+      resources.health.closest(latitude, longitude),
+      resources.shelter.closest(latitude, longitude)
+    ]
+  end
+
   def resource_params
     params.require(:resource).permit(
-      :name,
-      :street,
-      :city,
-      :state,
-      :zipcode,
-      :latitude,
-      :longitude,
-      :phone,
-      :description,
-      :food,
-      :health,
-      :shelter
+      :name, :street, :city, :state, :zipcode, :latitude, :longitude, :phone,
+      :description, :food, :health, :shelter
     )
   end
 end

@@ -4,7 +4,7 @@ class Resource < ApplicationRecord
   enum status: %i[unverified verified]
 
   validates_presence_of :name, :description, :street, :city, :state, :zipcode
-  validate :has_resource_type
+  validate :resource_type?
 
   after_validation :geocode
 
@@ -28,9 +28,10 @@ class Resource < ApplicationRecord
     [street, city, state, zipcode].join(', ')
   end
 
-  def has_resource_type
-    unless food || health || shelter
-      errors.add(:base, 'at least one resource type must be set (food, health, shelter)')
-    end
+  def resource_type?
+    errors.add(
+      :base,
+      'at least one resource type must be set (food, health, shelter)'
+    ) unless food || health || shelter
   end
 end

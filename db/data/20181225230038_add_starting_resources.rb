@@ -6,7 +6,7 @@ class AddStartingResources < SeedMigration::Migration
   end
 
   def down
-    Resource.destroy_all!
+    Resource.destroy_all
   end
 
   private

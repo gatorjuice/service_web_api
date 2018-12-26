@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Resource < ApplicationRecord
-  enum status: [:unverified, :verified]
+  enum status: %i[unverified verified]
 
   validates_presence_of :name, :description, :street, :city, :state, :zipcode
   validate :has_resource_type
@@ -8,17 +10,17 @@ class Resource < ApplicationRecord
 
   geocoded_by :address
 
-  scope :food, -> () { where(food: true) }
-  scope :health, -> () { where(health: true) }
-  scope :shelter, -> () { where(shelter: true) }
+  scope :food, -> { where(food: true) }
+  scope :health, -> { where(health: true) }
+  scope :shelter, -> { where(shelter: true) }
 
-  scope :close, -> (latitude, longitude, mi_radius) do
+  scope :close, lambda { |latitude, longitude, mi_radius|
     near([latitude, longitude], mi_radius)
-  end
+  }
 
-  scope :closest, -> (latitude, longitude) do
+  scope :closest, lambda { |latitude, longitude|
     min_by { |resource| resource.distance_from([latitude, longitude]) }
-  end
+  }
 
   private
 

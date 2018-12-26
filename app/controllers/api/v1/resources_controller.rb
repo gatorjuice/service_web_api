@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Api::V1::ResourcesController < ApplicationController
   before_action :define_location, only: [:index]
-  before_action :define_resource, only: [:show, :update, :destroy]
+  before_action :define_resource, only: %i[show update destroy]
 
   attr_reader :resource, :latitude, :longitude, :radius
 
@@ -21,7 +23,7 @@ class Api::V1::ResourcesController < ApplicationController
     end
 
     render_success(resources.select(&:present?))
-  rescue => error
+  rescue StandardError => error
     render_error(error.inspect)
   end
 
@@ -29,7 +31,7 @@ class Api::V1::ResourcesController < ApplicationController
   param :id, String, desc: 'id of the requested resource', required: true
   def show
     render_success(resource)
-  rescue => error
+  rescue StandardError => error
     render_error(error.inspect)
   end
 
@@ -37,21 +39,21 @@ class Api::V1::ResourcesController < ApplicationController
   def create
     resource = Resource.create!(resource_params)
     render_success(resource)
-  rescue => error
+  rescue StandardError => error
     render_error(error.inspect)
   end
 
   def update
     resource.update!(resource_params)
     render_success(resource)
-  rescue => error
+  rescue StandardError => error
     render_error(error.inspect)
   end
 
   def destroy
     resource.destroy!
     render_success(resource)
-  rescue => error
+  rescue StandardError => error
     render_error(error.inspect)
   end
 

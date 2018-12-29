@@ -8,31 +8,13 @@ RSpec.describe Api::V1::ResourcesController, type: :controller do
     let!(:health_resource) { create :resource, :health }
     let!(:shelter_resource) { create :resource, :shelter }
     let!(:distant_resource) { create :resource, :far_away }
+    let(:params) do
+      { latitude: 41.878113, longitude: -87.629799, radius: 100 }
+    end
 
     context 'closest param is true' do
       it 'returns the closest of each resource' do
-        get :index, params: {
-          latitude: 41.878113,
-          longitude: -87.629799,
-          radius: 100,
-          closest: true
-        }
-
-        parsed_response = JSON.parse response.body
-
-        expect(parsed_response.map { |resource| resource['id'] }).to match_array(
-          [food_resource.id, health_resource.id, shelter_resource.id]
-        )
-      end
-    end
-
-    context 'closest param is nil or false' do
-      it 'returns all resources within the radius' do
-        get :index, format: :json, params: {
-          latitude: 41.878113,
-          longitude: -87.629799,
-          radius: 100
-        }
+        get :index, format: :json, params: params.merge(closest: true)
 
         parsed_response = JSON.parse response.body
 
@@ -41,6 +23,16 @@ RSpec.describe Api::V1::ResourcesController, type: :controller do
         expect(resource_ids).to match_array(
           [food_resource.id, health_resource.id, shelter_resource.id]
         )
+      end
+    end
+
+    context 'closest param is nil or false' do
+      it 'returns all resources within the radius' do
+        get :index, format: :json, params: params
+
+        parsed_response = JSON.parse response.body
+
+        resource_ids = parsed_response.map { |resource| resource['id'] }
 
         expect(resource_ids).to_not include distant_resource.id
       end

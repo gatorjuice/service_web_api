@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+##
+# short for 'Community Resource', this is the food, health, or shelter entity
+# in the community.
+
 class Resource < ApplicationRecord
   enum status: %i[unverified verified]
 
@@ -29,9 +33,8 @@ class Resource < ApplicationRecord
   end
 
   def resource_type?
-    errors.add(
-      :base,
-      'at least one resource type must be set (food, health, shelter)'
-    ) unless food || health || shelter
+    return if food || health || shelter
+
+    errors.add(:base, '1+ resource type must be set (food, health, shelter)')
   end
 end

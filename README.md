@@ -12,8 +12,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
+I recommend using a version manager such as [asdf](https://github.com/asdf-vm/asdf) or [rbenv](https://github.com/rbenv/rbenv).
+
 ```
-ruby 2.4 # I recommend using a version manager such as [asdf](https://github.com/asdf-vm/asdf) or [rbenv](https://github.com/rbenv/rbenv).
+ruby 2.4
 rails 5.2
 postgres 9.6
 ```

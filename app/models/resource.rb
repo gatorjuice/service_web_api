@@ -29,9 +29,8 @@ class Resource < ApplicationRecord
   end
 
   def resource_type?
-    errors.add(
-      :base,
-      'at least one resource type must be set (food, health, shelter)'
-    ) unless food || health || shelter
+    return if food || health || shelter
+
+    errors.add(:base, '1+ resource type must be set (food, health, shelter)')
   end
 end

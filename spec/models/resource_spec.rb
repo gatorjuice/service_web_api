@@ -15,7 +15,7 @@ RSpec.describe Resource, type: :model do
       resource = build(:resource, food: false, health: false, shelter: false)
       resource.valid?
       expect(resource.errors[:base]).to include(
-        'at least one resource type must be set (food, health, shelter)'
+        '1+ resource type must be set (food, health, shelter)'
       )
     end
   end

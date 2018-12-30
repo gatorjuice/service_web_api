@@ -54,13 +54,13 @@ class Api::V1::ResourcesController < ApplicationController
   private
 
   def define_location
-    @latitude ||= params.require(:latitude)
-    @longitude ||= params.require(:longitude)
-    @radius ||= params.require(:radius)
+    @latitude = params.require(:latitude)
+    @longitude = params.require(:longitude)
+    @radius = params.require(:radius)
   end
 
   def define_resource
-    @resource ||= Resource.find(params[:id])
+    @resource = Resource.find(params[:id])
   end
 
   def closest_resources(resources)

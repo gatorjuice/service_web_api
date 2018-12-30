@@ -140,7 +140,6 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    rdoc (5.0.0)
     rspec-core (3.8.0)
       rspec-support (~> 3.8.0)
     rspec-expectations (3.8.2)
@@ -208,7 +207,6 @@ DEPENDENCIES
   pry
   puma (~> 3.11)
   rails (~> 5.2.2)
-  rdoc
   rspec-rails
   rubocop
   seed_migration

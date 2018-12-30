@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-##
-# short for 'Community Resource', this is the food, health, or shelter entity
-# in the community.
-
 class Resource < ApplicationRecord
   enum status: %i[unverified verified]
 

@@ -34,6 +34,7 @@ gem 'active_model_serializers'
 gem 'apipie-rails'
 gem 'geocoder'
 gem 'seed_migration'
+gem 'twilio-ruby', '~> 5.18.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

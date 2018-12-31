@@ -22,6 +22,14 @@ class Resource < ApplicationRecord
     min_by { |resource| resource.distance_from([latitude, longitude]) }
   }
 
+  def share_sms(to)
+    client = Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN'])
+
+    return unless client.messages.create(body: sms_body, from: ENV['TWILIO_FROM'], to: to)
+
+    increment!(:shares)
+  end
+
   private
 
   def address
@@ -32,5 +40,9 @@ class Resource < ApplicationRecord
     return if food || health || shelter
 
     errors.add(:base, '1+ resource type must be set (food, health, shelter)')
+  end
+
+  def sms_body
+    "#{name} - #{phone} - #{address}"
   end
 end

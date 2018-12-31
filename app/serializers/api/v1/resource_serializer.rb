@@ -8,7 +8,7 @@ class Api::V1::ResourceSerializer < ActiveModel::Serializer
     :phone,
     :address,
     :status,
-    :shares,
+    :shares_count,
     :food,
     :health,
     :shelter,

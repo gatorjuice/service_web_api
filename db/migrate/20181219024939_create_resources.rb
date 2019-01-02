@@ -14,7 +14,6 @@ class CreateResources < ActiveRecord::Migration[5.2]
       t.boolean :health
       t.boolean :shelter
       t.integer :status, default: 0
-      t.integer :shares, default: 0
 
       t.timestamps
     end

@@ -24,3 +24,6 @@
 
 # dotenv
 /.env.local
+
+# coverage
+/coverage

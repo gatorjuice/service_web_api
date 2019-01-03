@@ -1,4 +1,4 @@
-# Service Web Api
+# Service Web API
 
 This backend application (will serve/serves, depending on when you're reading this) as source and CRUD interface for all resources, users, reviews, etc. for the serviceweb website.
 
@@ -22,13 +22,13 @@ postgres 9.6
 
 ### Installing
 
-install dependencies
+Install dependencies
 
 ```
 bundle install
 ```
 
-construct the database and migrate development data
+Construct the database and migrate development data
 
 ```
 bundle exec rake db:create
@@ -58,9 +58,9 @@ Style enforcement is provided by [rubocop](https://github.com/rubocop-hq/rubocop
 bundle exec rubocop
 ```
 
-## Deployment
+## Exploring the API
 
-No deployment strategy as of yet.
+The API is documented using [apipie](https://github.com/Apipie/apipie-rails) and can be found at `localhost:3000/apipie`.
 
 ## Versioning
 
@@ -74,4 +74,4 @@ See also the list of [contributors](https://github.com/gatorjuice/service_web_ap
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
